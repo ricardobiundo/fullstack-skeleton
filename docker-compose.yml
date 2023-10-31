@@ -10,7 +10,9 @@ services:
       - ./backend/skeleton:/app
     ports:
       - "8000:8000"
-    command: tail -f /dev/null # Uncomment for development
+    # command: tail -f /dev/null # Uncomment for development
+    networks:
+      - local
 
   skeleton-frontend:
     build:
@@ -23,8 +25,14 @@ services:
     working_dir: /app
     volumes:
       - ./frontend/skeleton:/app
-    user: 1000:1000 # Replace with your host user_id and group_id that you can get by runnig: id
+    user: 1000:1000 # Replace with your host user_id and group_id that you can get by running: id
     depends_on:
-      - "skeleton-backend"
+      - skeleton-backend  # Use the service name here
     tty: true
     # command: tail -f /dev/null # Uncomment for development
+    networks:
+      - local
+
+networks:
+  local:
+    driver: bridge
