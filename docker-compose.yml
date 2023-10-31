@@ -1,0 +1,27 @@
+version: '3'
+services:
+  skeleton-backend:
+    build:
+      context: backend/skeleton
+      dockerfile: Dockerfile  # Path to the Dockerfile for the backend
+    container_name: skeleton-backend
+    working_dir: /app
+    volumes:
+      - ./backend/skeleton:/app
+    ports:
+      - "8000:8000"
+    command: tail -f /dev/null # Uncomment for development
+
+  skeleton-frontend:
+    image: node:18-alpine
+    container_name: skeleton-frontend
+    ports:
+      - "3000:3000"
+    working_dir: /app
+    volumes:
+      - ./frontend/skeleton:/app
+    user: 1000:1000 # Replace with your host user_id and group_id that you can get by runnig: id
+    depends_on:
+      - "skeleton-backend"
+    tty: true
+    command: yarn dev
