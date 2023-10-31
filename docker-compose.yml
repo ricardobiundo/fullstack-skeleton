@@ -3,7 +3,7 @@ services:
   skeleton-backend:
     build:
       context: backend/skeleton
-      dockerfile: Dockerfile  # Path to the Dockerfile for the backend
+      dockerfile: Dockerfile
     container_name: skeleton-backend
     working_dir: /app
     volumes:
@@ -13,7 +13,10 @@ services:
     command: tail -f /dev/null # Uncomment for development
 
   skeleton-frontend:
-    image: node:18-alpine
+    build:
+      context: frontend/skeleton
+      dockerfile: Dockerfile
+    image: node:20-alpine
     container_name: skeleton-frontend
     ports:
       - "3000:3000"
@@ -24,4 +27,4 @@ services:
     depends_on:
       - "skeleton-backend"
     tty: true
-    command: yarn dev
+    # command: tail -f /dev/null # Uncomment for development
